@@ -20,6 +20,7 @@ A lightweight Bash script for the XFCE Genmon Plugin that displays the number of
 * xfce4-genmon-plugin
 * xfce4-terminal
 
+
 ## Usage
 
 Add the script to the XFCE Genmon Plugin and set a refresh interval of your choice. Clicking the panel indicator opens a terminal and runs:
@@ -30,23 +31,28 @@ sudo apt update && sudo apt full-upgrade
 
 This provides a simple and convenient way to monitor and install system updates directly from the XFCE panel.
 
-## Optional: Passwordless Updates
 
-To avoid entering your password every time you run updates from the panel, you can allow specific APT commands to be executed via `sudo` without a password prompt.
+## Optional: Run Updates Without a Password Prompt
 
-Edit the sudoers file:
+If you would like to start updates directly from the panel without entering your sudo password, add the following rule to your sudoers configuration:
 
 ```bash
 sudo visudo
 ```
 
-Add the following line at the end of the file (replace `yourusername` with your actual username):
+Add the following line at the end of the file (replace yourusername with your actual username):
 
-```bash
+```text
 yourusername ALL=(root) NOPASSWD: /usr/bin/apt update, /usr/bin/apt full-upgrade
 ```
 
-This configuration allows only the commands used by the update indicator to run without requiring a password, while keeping all other administrative commands protected.
+This allows the update indicator to execute only the required update commands without prompting for a password.
 
-**Note:** Granting access only to the required commands is more secure than allowing unrestricted passwordless sudo access to all APT operations.
+### Security Note
 
+This configuration is more secure than allowing unrestricted passwordless sudo access because only the following commands are permitted:
+
+* `apt update`
+* `apt full-upgrade`
+
+All other administrative commands will continue to require authentication.
