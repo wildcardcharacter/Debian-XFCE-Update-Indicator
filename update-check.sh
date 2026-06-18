@@ -20,4 +20,4 @@ echo "<txt><span foreground='$COLOR'>$TEXT</span></txt>"
 echo "<tool>$TOOLTIP</tool>"
 
 # Linksklick: Update installieren
-echo "<txtclick>xfce4-terminal --hold --command='bash -c \"sudo apt update && sudo apt full-upgrade\"'</txtclick>"
+echo "<txtclick>xfce4-terminal --command='bash -c \"sudo apt update && sudo apt full-upgrade && sudo apt update; xfce4-panel -r; exit\"'</txtclick>"
