@@ -1,74 +1,74 @@
 # Debian XFCE Update Indicator
 
-Ein leichtgewichtiges XFCE-Genmon-Widget zur Anzeige verfügbarer Systemupdates direkt im Panel.
+A lightweight XFCE Genmon widget that displays available Debian package updates directly in the panel and allows one-click system upgrades.
 
-Das Widget zeigt die Anzahl verfügbarer APT-Updates an und ermöglicht die Installation per Mausklick.
+The widget provides a simple visual indicator for available updates and automatically refreshes its status after upgrades are completed.
 
-## Funktionen
+## Features
 
-* Anzeige verfügbarer Debian-Paketupdates
-* Farbliche Statusanzeige
-* Direkte Update-Installation per Klick
-* Automatische Aktualisierung nach erfolgreichem Upgrade
-* Integration in das XFCE Genmon Plugin
-* Leichtgewichtiges Bash-Skript
+* Display available APT package updates
+* Color-coded update status
+* One-click system upgrades
+* Automatic refresh after updates
+* XFCE Genmon integration
+* Lightweight Bash implementation
 
-## Statusanzeige
+## Status Indicators
 
-### System aktuell
+### System Up To Date
 
 ```text
 🛡️✓
 ```
 
-### Updates verfügbar
+### Updates Available
 
 ```text
 🛡️⬆ 3
 ```
 
-## Farbcodierung
+## Color Coding
 
-| Status                 | Farbe  |
-| ---------------------- | ------ |
-| Keine Updates          | Grün   |
-| Weniger als 10 Updates | Orange |
-| 10 oder mehr Updates   | Rot    |
+| Status               | Color  |
+| -------------------- | ------ |
+| No updates available | Green  |
+| Less than 10 updates | Orange |
+| 10 or more updates   | Red    |
 
-## Voraussetzungen
+## Requirements
 
-* Debian 13 oder kompatible Linux-Distribution
-* XFCE Desktop
+* Debian 13 (or compatible Linux distribution)
+* XFCE Desktop Environment
 * xfce4-genmon-plugin
-* APT Paketverwaltung
+* APT package manager
 
 ## Installation
 
-Widget-Skript nach:
+Copy the widget script to:
 
 ```bash
 ~/.local/bin/update-indicator.sh
 ```
 
-kopieren und ausführbar machen:
+Make it executable:
 
 ```bash
 chmod +x ~/.local/bin/update-indicator.sh
 ```
 
-Zusätzlich das Update-Skript anlegen:
+Create an additional update helper script:
 
 ```bash
 ~/.local/bin/apt-update-run.sh
 ```
 
-und ausführbar machen:
+Make it executable:
 
 ```bash
 chmod +x ~/.local/bin/apt-update-run.sh
 ```
 
-## Inhalt von apt-update-run.sh
+## apt-update-run.sh
 
 ```bash
 #!/bin/bash
@@ -82,65 +82,63 @@ nohup xfce4-panel -r >/dev/null 2>&1 &
 exit 0
 ```
 
-## XFCE Genmon Konfiguration
+## XFCE Genmon Configuration
 
-**Befehl:**
+**Command:**
 
 ```text
-/home/USERNAME/.local/bin/update-indicator.sh
+~/.local/bin/update-indicator.sh
 ```
 
-**Aktualisierungsintervall:**
+**Refresh Interval:**
 
 ```text
 300
 ```
 
-**Option aktivieren:**
+**Enable:**
 
 ```text
 Use Markup
 ```
 
-## Verwendung
+## Usage
 
-Das Widget überprüft verfügbare Updates und zeigt den aktuellen Status direkt im XFCE-Panel an.
+The widget checks for available package updates and displays the current status directly in the XFCE panel.
 
-Ein Klick auf das Symbol öffnet ein Terminal und startet:
+Clicking the widget opens a terminal and starts:
 
 ```bash
 sudo apt update
 sudo apt full-upgrade
 ```
 
-Nach Abschluss:
+After completion:
 
-* werden die Paketlisten aktualisiert
-* wird das XFCE-Panel automatisch neu geladen
-* werden alle Genmon-Widgets aktualisiert
-* wird die Update-Anzeige sofort neu berechnet
+* Package lists are refreshed
+* The XFCE panel is automatically restarted
+* All Genmon widgets are refreshed
+* The update count is recalculated immediately
 
-## Verbesserungen
+## Automatic Refresh After Updates
 
-### Automatische Aktualisierung nach Updates
+Earlier versions could continue displaying available updates after a successful upgrade until the next Genmon refresh interval was reached.
 
-Frühere Versionen konnten nach einem erfolgreichen Upgrade weiterhin verfügbare Updates anzeigen, bis das nächste Genmon-Intervall erreicht wurde.
+The current version uses a dedicated update script and automatically reloads the XFCE panel after upgrades are completed.
 
-Die aktuelle Version verwendet ein separates Update-Skript und startet das XFCE-Panel nach Abschluss automatisch neu.
+### Benefits
 
-Vorteile:
+* Instant status refresh
+* No outdated update counters
+* More reliable update process
+* Improved user experience
 
-* Sofort aktualisierte Anzeige
-* Keine veralteten Update-Zähler
-* Zuverlässigerer Update-Prozess
-* Bessere Benutzererfahrung
-
-## Verwendete Technologien
+## Technologies
 
 * Bash
 * APT
 * XFCE Genmon Plugin
 
-## Lizenz
+## License
 
 MIT License
