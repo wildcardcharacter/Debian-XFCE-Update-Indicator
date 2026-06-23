@@ -1,58 +1,146 @@
-# Debian-XFCE-Update-Indicator
-A lightweight Bash script for the XFCE Genmon Plugin that displays the number of available APT updates directly in the panel.
+# Debian XFCE Update Indicator
 
-## Features
+Ein leichtgewichtiges XFCE-Genmon-Widget zur Anzeige verfügbarer Systemupdates direkt im Panel.
 
-* Shows the number of available package updates.
-* Color-coded status display:
+Das Widget zeigt die Anzahl verfügbarer APT-Updates an und ermöglicht die Installation per Mausklick.
 
-  * 🟢 Green: System is up to date.
-  * 🟠 Orange: Fewer than 10 updates available.
-  * 🔴 Red: 10 or more updates available.
-* Tooltip with update information.
-* One-click system update via XFCE Terminal.
-* Designed for Debian and Debian-based distributions using XFCE.
+## Funktionen
 
-## Requirements
+* Anzeige verfügbarer Debian-Paketupdates
+* Farbliche Statusanzeige
+* Direkte Update-Installation per Klick
+* Automatische Aktualisierung nach erfolgreichem Upgrade
+* Integration in das XFCE Genmon Plugin
+* Leichtgewichtiges Bash-Skript
 
-* Debian 13 (or compatible Debian-based distribution)
-* XFCE Desktop Environment
-* xfce4-genmon-plugin
-* xfce4-terminal
+## Statusanzeige
 
-
-## Usage
-
-Add the script to the XFCE Genmon Plugin and set a refresh interval of your choice. Clicking the panel indicator opens a terminal and runs:
-
-```bash
-sudo apt update && sudo apt full-upgrade
-```
-
-This provides a simple and convenient way to monitor and install system updates directly from the XFCE panel.
-
-
-## Optional: Run Updates Without a Password Prompt
-
-If you would like to start updates directly from the panel without entering your sudo password, add the following rule to your sudoers configuration:
-
-```bash
-sudo visudo
-```
-
-Add the following line at the end of the file (replace yourusername with your actual username):
+### System aktuell
 
 ```text
-yourusername ALL=(root) NOPASSWD: /usr/bin/apt update, /usr/bin/apt full-upgrade
+🛡️✓
 ```
 
-This allows the update indicator to execute only the required update commands without prompting for a password.
+### Updates verfügbar
 
-### Security Note
+```text
+🛡️⬆ 3
+```
 
-This configuration is more secure than allowing unrestricted passwordless sudo access because only the following commands are permitted:
+## Farbcodierung
 
-* `apt update`
-* `apt full-upgrade`
+| Status                 | Farbe  |
+| ---------------------- | ------ |
+| Keine Updates          | Grün   |
+| Weniger als 10 Updates | Orange |
+| 10 oder mehr Updates   | Rot    |
 
-All other administrative commands will continue to require authentication.
+## Voraussetzungen
+
+* Debian 13 oder kompatible Linux-Distribution
+* XFCE Desktop
+* xfce4-genmon-plugin
+* APT Paketverwaltung
+
+## Installation
+
+Widget-Skript nach:
+
+```bash
+~/.local/bin/update-indicator.sh
+```
+
+kopieren und ausführbar machen:
+
+```bash
+chmod +x ~/.local/bin/update-indicator.sh
+```
+
+Zusätzlich das Update-Skript anlegen:
+
+```bash
+~/.local/bin/apt-update-run.sh
+```
+
+und ausführbar machen:
+
+```bash
+chmod +x ~/.local/bin/apt-update-run.sh
+```
+
+## Inhalt von apt-update-run.sh
+
+```bash
+#!/bin/bash
+
+sudo apt update
+sudo apt full-upgrade
+sudo apt update
+
+nohup xfce4-panel -r >/dev/null 2>&1 &
+
+exit 0
+```
+
+## XFCE Genmon Konfiguration
+
+**Befehl:**
+
+```text
+/home/USERNAME/.local/bin/update-indicator.sh
+```
+
+**Aktualisierungsintervall:**
+
+```text
+300
+```
+
+**Option aktivieren:**
+
+```text
+Use Markup
+```
+
+## Verwendung
+
+Das Widget überprüft verfügbare Updates und zeigt den aktuellen Status direkt im XFCE-Panel an.
+
+Ein Klick auf das Symbol öffnet ein Terminal und startet:
+
+```bash
+sudo apt update
+sudo apt full-upgrade
+```
+
+Nach Abschluss:
+
+* werden die Paketlisten aktualisiert
+* wird das XFCE-Panel automatisch neu geladen
+* werden alle Genmon-Widgets aktualisiert
+* wird die Update-Anzeige sofort neu berechnet
+
+## Verbesserungen
+
+### Automatische Aktualisierung nach Updates
+
+Frühere Versionen konnten nach einem erfolgreichen Upgrade weiterhin verfügbare Updates anzeigen, bis das nächste Genmon-Intervall erreicht wurde.
+
+Die aktuelle Version verwendet ein separates Update-Skript und startet das XFCE-Panel nach Abschluss automatisch neu.
+
+Vorteile:
+
+* Sofort aktualisierte Anzeige
+* Keine veralteten Update-Zähler
+* Zuverlässigerer Update-Prozess
+* Bessere Benutzererfahrung
+
+## Verwendete Technologien
+
+* Bash
+* APT
+* XFCE Genmon Plugin
+
+## Lizenz
+
+MIT License
